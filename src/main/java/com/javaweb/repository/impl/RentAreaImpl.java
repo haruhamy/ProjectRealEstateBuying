@@ -28,7 +28,7 @@ public class RentAreaImpl implements RentAreaRepository {
 				RentAreaEntity areaEntity = new RentAreaEntity();
 				areaEntity.setId(rs.getLong("id"));
 				areaEntity.setValue(rs.getLong("value"));
-				areaEntity.setBuildingId(rs.getLong("buildingid"));
+				//areaEntity.setBuildingId(rs.getLong("buildingid"));
 				rentAreaEntity.add(areaEntity);
 			}
 

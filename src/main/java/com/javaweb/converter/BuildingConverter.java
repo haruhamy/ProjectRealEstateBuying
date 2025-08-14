@@ -42,9 +42,9 @@ public class BuildingConverter {
 //		buildingResponse.setAddress(
 //				buildingEntity.getStreet() + "," + buildingEntity.getWard() + buildingEntity.getDistrictId());
 
-		DistrictEntity districtEntity = districtRepository.findById(buildingEntity.getDistrictId());
+		//DistrictEntity districtEntity = districtRepository.findById(buildingEntity.getDistrictId());
 		buildingResponse.setAddress(
-				buildingEntity.getStreet() + "," + buildingEntity.getWard() + "," + districtEntity.getName());
+				buildingEntity.getStreet() + "," + buildingEntity.getWard() + "," + "");
 		List<RentAreaEntity> rentArea = rentAreaRepository.findById(buildingEntity.getId());
 		StringBuilder rentAreaValue = new StringBuilder("");
 		for (int i = 0; i < rentArea.size(); i++) {

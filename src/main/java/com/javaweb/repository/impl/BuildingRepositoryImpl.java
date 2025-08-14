@@ -137,7 +137,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 				BuildingEntity building = new BuildingEntity();
 				building.setId(rs.getLong("id"));
 				building.setName(rs.getString("name"));
-				building.setDistrictId(rs.getLong("districtid"));
+//				building.setDistrictId(rs.getLong("districtid"));
 				building.setNumberOfBasement(rs.getLong("numberOfBasement"));
 				building.setStreet(rs.getString("street"));
 				building.setWard(rs.getString("ward"));

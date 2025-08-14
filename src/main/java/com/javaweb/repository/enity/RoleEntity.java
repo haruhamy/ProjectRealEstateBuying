@@ -11,47 +11,53 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "district")
-public class DistrictEntity {
+@Table(name = "role")
+public class RoleEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(unique = true, nullable = false)
+	@Column(name = "code", unique = true, nullable = false)
 	private String code;
 	
-	@Column(nullable = false)
+	@Column(name = "name", nullable = false)
 	private String name;
+
+	@OneToMany(mappedBy = "roleEntity")
+	private List<UserRoleEntity> roleUserEntity;
+	
+	public List<UserRoleEntity> getRoleUserEntity() {
+		return roleUserEntity;
+	}
+
+	public void setRoleUserEntity(List<UserRoleEntity> roleUserEntity) {
+		this.roleUserEntity = roleUserEntity;
+	}
+
 	public Long getId() {
 		return id;
 	}
-	
-	@OneToMany(mappedBy = "districtEntity")
-	//mappedBy là tên fileds của khóa ngoại, dùng để ánh xạ
-	private List<BuildingEntity> buildingEntity;
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getCode() {
 		return code;
 	}
+
 	public void setCode(String code) {
 		this.code = code;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
-	}
-	public List<BuildingEntity> getBuildingEntity() {
-		return buildingEntity;
-	}
-	public void setBuildingEntity(List<BuildingEntity> buildingEntity) {
-		this.buildingEntity = buildingEntity;
-	}
+	}	
 	
 	
 }
