@@ -20,7 +20,14 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler{
 	}
 	
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Object> handleException(ValidateDataBuildingException ex){
+	public ResponseEntity<Object> handleException(Exception ex){
+		ErrorDetailReponse errorDetailReponse = new ErrorDetailReponse();
+		errorDetailReponse.setError(ex.getMessage());
+		return new ResponseEntity<Object>(errorDetailReponse, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler(NumberFormatException.class)
+	public ResponseEntity<Object> handleNumberFormatException(Exception ex){
 		ErrorDetailReponse errorDetailReponse = new ErrorDetailReponse();
 		errorDetailReponse.setError(ex.getMessage());
 		return new ResponseEntity<Object>(errorDetailReponse, HttpStatus.INTERNAL_SERVER_ERROR);

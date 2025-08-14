@@ -7,7 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.converter.BuildingConverter;
+import com.javaweb.converter.BuildingSearchBuilderConverter;
 import com.javaweb.dto.BuildingResponseDTO;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.enity.BuildingEntity;
@@ -21,10 +23,15 @@ public class BuildingServiceImpl implements BuildingService {
 	
 	@Autowired
 	private BuildingConverter buildingConverter;
+	
+	@Autowired
+	private BuildingSearchBuilderConverter buildingSearchBuilderConverter;
 
 	@Override
 	public List<BuildingResponseDTO> findAll(Map<String, Object> params, List<String> typeCode) {
-		List<BuildingEntity> buildingEntities = buildingRepository.findAll(params, typeCode);
+		//Convert dữ liệu sang Builder
+		BuildingSearchBuilder buildingSearchBuilder = buildingSearchBuilderConverter.toBuildingSearchBuilder(params, typeCode);
+		List<BuildingEntity> buildingEntities = buildingRepository.findAll(buildingSearchBuilder);
 
 		// filter
 		List<BuildingResponseDTO> result = new ArrayList<>();

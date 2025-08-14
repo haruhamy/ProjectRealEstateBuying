@@ -13,7 +13,7 @@ import com.javaweb.repository.enity.BuildingEntity;
 import com.javaweb.repository.enity.DistrictEntity;
 import com.javaweb.repository.enity.RentAreaEntity;
 
-@Component 
+@Component
 // Định đây là 1 bean
 public class BuildingConverter {
 	@Autowired
@@ -21,7 +21,7 @@ public class BuildingConverter {
 
 	@Autowired
 	private RentAreaRepository rentAreaRepository;
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
 	// CÓ 2 hàm
@@ -31,8 +31,8 @@ public class BuildingConverter {
 	// Hàm thứ hai
 	public BuildingResponseDTO toBuildingSearchResponseDTO(BuildingEntity buildingEntity) {
 		BuildingResponseDTO buildingResponse = modelMapper.map(buildingEntity, BuildingResponseDTO.class);
-		//Bên trái là đang cầm data, bên phải là class muốn đổ qua 
-		//Khác kiểu dữ liệu vẫn modelMapper được nhé, chú ý phỏng vấn
+		// Bên trái là đang cầm data, bên phải là class muốn đổ qua
+		// Khác kiểu dữ liệu vẫn modelMapper được nhé, chú ý phỏng vấn
 
 //		buildingResponse.setId(buildingEntity.getId());
 //		buildingResponse.setName(buildingEntity.getName());
@@ -41,7 +41,7 @@ public class BuildingConverter {
 		// Chính xác phải là tên quận không phải id của quận, này phải sửa
 //		buildingResponse.setAddress(
 //				buildingEntity.getStreet() + "," + buildingEntity.getWard() + buildingEntity.getDistrictId());
- 
+
 		DistrictEntity districtEntity = districtRepository.findById(buildingEntity.getDistrictId());
 		buildingResponse.setAddress(
 				buildingEntity.getStreet() + "," + buildingEntity.getWard() + "," + districtEntity.getName());

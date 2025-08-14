@@ -1,21 +1,21 @@
 package com.javaweb.repository.impl;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.enity.BuildingEntity;
 import com.javaweb.util.ConnectionDriverUtils;
-import com.javaweb.util.StringUtils;
 
 @Primary
 @Repository
@@ -25,58 +25,79 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 	// rentArea (tìm theo diện tích thuê)
 	// staffId (Tìm kiếm theo nhân viên phụ trách)
 	// Tìm kiếm theo loại tòa nhà
-	private void buildJoin(Map<String, Object> params, List<String> typeCode, StringBuilder join) {
+	private void buildJoin(com.javaweb.builder.BuildingSearchBuilder buildingSearchBuilder, StringBuilder join) {
 		// Lấy StaffId trước
-		String staffId = (String) params.get("staffId");
 		// if(staffId != null && !staffId.isEmpty()) {
 		// Phần nào lặp đi lặp lại ở nhiều class thì cho vào Utils
 
-		if (StringUtils.isNotBlank(staffId)) {
+		if (buildingSearchBuilder.getStaffId() != null) {
 			join.append(" join assignmentbuilding asb ON asb.buildingid = b.id ");
 		}
-		if (!typeCode.isEmpty() && typeCode != null) {
+		if (!buildingSearchBuilder.getTypeCode().isEmpty() && buildingSearchBuilder.getTypeCode() != null) {
 			join.append(" join buildingrenttype brt ON brt.buildingid = b.id ");
 			join.append(" join renttype rt ON rt.id = brt.renttypeid ");
 		}
-		String rentAreaFrom = (String) params.get("rentAreaFrom");
-		String rentAreaTo = (String) params.get("rentAreaTo");
-		if (StringUtils.isNotBlank(rentAreaTo) || StringUtils.isNotBlank(rentAreaFrom)) {
+		if (buildingSearchBuilder.getRentAreaFrom() != null || buildingSearchBuilder.getRentAreaTo() != null) {
 			join.append(" join rentarea ON rentarea.buildingid = b.id ");
 		}
 	}
 
-	private void buildCondition(Map<String, Object> params, List<String> typeCode, StringBuilder where) {
-		// Duyệt Map
-		//Build Normal trước
-		for (Map.Entry<String, Object> item : params.entrySet()) {
-			String key = item.getKey();
-			if (!key.equals("staffId") && !key.equals("typeCode") && !key.startsWith("rentArea")
-					&& !key.startsWith("rentPrice")) {
-				Object value = item.getValue();
-				if(StringUtils.isNotBlank(value.toString())) {
-					if(StringUtils.isNumber(value.toString())) {
-						where.append(" AND b." + key + " = " + value.toString());
-					}
-					else {
-						where.append(" AND b." + key + " LIKE '% " + value.toString() + "%'");
+	private void buildCondition(BuildingSearchBuilder buildingSearchBuilder, StringBuilder where) {
+		// Java Reflection
+		// Build Normal trước
+		try {
+			Field[] fields = BuildingSearchBuilder.class.getDeclaredFields();
+			for (Field item : fields) {
+				item.setAccessible(true); // Bật cờ lên
+				String key = item.getName();
+				if (!key.equals("staffId") && !key.equals("typeCode") && !key.startsWith("rentArea")
+						&& !key.startsWith("rentPrice")) {
+					Object value = item.get(buildingSearchBuilder);
+					if (value != null) {
+						if (com.javaweb.util.StringUtils.isNumber(value.toString())) {
+							where.append(" AND b." + key + " = " + value.toString());
+						} else {
+							where.append(" AND b." + key + " LIKE '% " + value.toString() + "%'");
+						}
 					}
 				}
 			}
-			//Build Special
-			String staffId = (String)params.get("staffId");
-			if(StringUtils.isNotBlank(staffId)) {
-				where.append(" AND asb.staffId = " + staffId);
-			}
-			String rentAreaFrom = (String)params.get("rentAreaFrom");
-			String rentAreaTo = (String)params.get("rentAreaTo");
-			if(StringUtils.isNotBlank(rentAreaFrom)) {
-				where.append(" AND rentarea.value >=  " + rentAreaFrom);
-			}
-			if(StringUtils.isNotBlank(rentAreaTo)) {
-				where.append(" AND rentarea.value <=  " + rentAreaTo);
-			}
-			if(!typeCode.isEmpty() && typeCode != null) {
-				where.append(" AND rt.code IN (" + typeCode.stream().map(i -> "'" + i + "'").collect(Collectors.joining(",")) + ")");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+//		for (Map.Entry<String, Object> item : params.entrySet()) {
+//			String key = item.getKey();
+//			if (!key.equals("staffId") && !key.equals("typeCode") && !key.startsWith("rentArea")
+//					&& !key.startsWith("rentPrice")) {
+//				Object value = item.getValue();
+//				if (StringUtils.isNotBlank(value.toString())) {
+//					if (StringUtils.isNumber(value.toString())) {
+//						where.append(" AND b." + key + " = " + value.toString());
+//					} else {
+//						where.append(" AND b." + key + " LIKE '% " + value.toString() + "%'");
+//					}
+//				}
+//			}
+		// Build Special
+		Long staffId = buildingSearchBuilder.getStaffId();
+		Long rentAreaFrom = buildingSearchBuilder.getRentAreaFrom();
+		Long rentAreaTo = buildingSearchBuilder.getRentAreaTo();
+
+		if (buildingSearchBuilder.getStaffId() != null) {
+			where.append(" AND asb.staffId = " + staffId);
+		}
+		if (buildingSearchBuilder.getRentAreaFrom() != null) {
+			where.append(" AND rentarea.value >=  " + rentAreaFrom);
+		}
+		if (buildingSearchBuilder.getRentAreaTo() != null) {
+			where.append(" AND rentarea.value <=  " + rentAreaTo);
+		}
+
+		List<String> typeCode = buildingSearchBuilder.getTypeCode();
+		if (!typeCode.isEmpty() && typeCode != null) {
+			where.append(" AND rt.code IN ("
+					+ typeCode.stream().map(i -> "'" + i + "'").collect(Collectors.joining(",")) + ")");
 //				for(int i = 0; i < typeCode.size(); i++) {
 //					where.append("'" + typeCode.get(i) + "'");
 //					if(i < typeCode.size() - 1) {
@@ -84,27 +105,26 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 //					}
 //				}
 //				where.append(")");
-				
-			}
-			String rentPriceFrom = (String)params.get("rentPriceFrom");
-			String rentPriceTo = (String)params.get("rentPriceTo");
-			if(StringUtils.isNotBlank(rentPriceFrom)) {
-				where.append(" AND b.rentprice >=  " + rentPriceFrom);
-			}
-			if(StringUtils.isNotBlank(rentPriceTo)) {
-				where.append(" AND b.rentprice <=  " + rentPriceTo);
-			}
+
+		}
+		Long rentPriceFrom = buildingSearchBuilder.getRentPriceFrom();
+		Long rentPriceTo = buildingSearchBuilder.getRentPriceTo();
+		if (rentPriceFrom != null) {
+			where.append(" AND b.rentprice >=  " + rentPriceFrom);
+		}
+		if (rentPriceTo != null) {
+			where.append(" AND b.rentprice <=  " + rentPriceTo);
 		}
 	}
 
 	@Override
-	public List<BuildingEntity> findAll(Map<String, Object> params, List<String> typeCode) {
+	public List<BuildingEntity> findAll(BuildingSearchBuilder buildingSearchBuilder) {
 		StringBuilder sql = new StringBuilder("SELECT b.* FROM building b");
 		// Xong Join gọi hàm nối với chuỗi sql
-		buildJoin(params, typeCode, sql);
+		buildJoin(buildingSearchBuilder, sql);
 
 		StringBuilder where = new StringBuilder(" WHERE 1 = 1 ");
-		buildCondition(params, typeCode, where);
+		buildCondition(buildingSearchBuilder, where);
 
 		// DÙng groupBy tránh lặp lại nhiều lần ở bảng nhiều
 		sql.append(where).append(" GROUP BY b.id ");
