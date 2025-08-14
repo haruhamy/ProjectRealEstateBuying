@@ -10,11 +10,7 @@ import org.springframework.stereotype.Service;
 import com.javaweb.converter.BuildingConverter;
 import com.javaweb.dto.BuildingResponseDTO;
 import com.javaweb.repository.BuildingRepository;
-import com.javaweb.repository.DistrictRepository;
-import com.javaweb.repository.RentAreaRepository;
 import com.javaweb.repository.enity.BuildingEntity;
-import com.javaweb.repository.enity.DistrictEntity;
-import com.javaweb.repository.enity.RentAreaEntity;
 import com.javaweb.service.BuildingService;
 
 @Service

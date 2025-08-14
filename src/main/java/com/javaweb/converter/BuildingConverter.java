@@ -2,6 +2,7 @@ package com.javaweb.converter;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,22 +21,27 @@ public class BuildingConverter {
 
 	@Autowired
 	private RentAreaRepository rentAreaRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 	// CÓ 2 hàm
 	// Hàm thứ nhất chuyển từ DTO -> Entity
 	// Hàm thứ 2 chuyển từ Entity -> DTO
 
 	// Hàm thứ hai
 	public BuildingResponseDTO toBuildingSearchResponseDTO(BuildingEntity buildingEntity) {
-		BuildingResponseDTO buildingResponse = new BuildingResponseDTO();
+		BuildingResponseDTO buildingResponse = modelMapper.map(buildingEntity, BuildingResponseDTO.class);
+		//Bên trái là đang cầm data, bên phải là class muốn đổ qua 
+		//Khác kiểu dữ liệu vẫn modelMapper được nhé, chú ý phỏng vấn
 
-		buildingResponse.setId(buildingEntity.getId());
-		buildingResponse.setName(buildingEntity.getName());
-		buildingResponse.setNumberOfBasement(buildingEntity.getNumberOfBasement());
-		buildingResponse.setRentPrice(buildingEntity.getRentPrice());
+//		buildingResponse.setId(buildingEntity.getId());
+//		buildingResponse.setName(buildingEntity.getName());
+//		buildingResponse.setNumberOfBasement(buildingEntity.getNumberOfBasement());
+//		buildingResponse.setRentPrice(buildingEntity.getRentPrice());
 		// Chính xác phải là tên quận không phải id của quận, này phải sửa
 //		buildingResponse.setAddress(
 //				buildingEntity.getStreet() + "," + buildingEntity.getWard() + buildingEntity.getDistrictId());
-
+ 
 		DistrictEntity districtEntity = districtRepository.findById(buildingEntity.getDistrictId());
 		buildingResponse.setAddress(
 				buildingEntity.getStreet() + "," + buildingEntity.getWard() + "," + districtEntity.getName());
