@@ -1,26 +1,20 @@
 package com.javaweb.converter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.javaweb.dto.BuildingResponseDTO;
-import com.javaweb.repository.DistrictRepository;
 import com.javaweb.repository.RentAreaRepository;
 import com.javaweb.repository.enity.BuildingEntity;
-import com.javaweb.repository.enity.DistrictEntity;
 import com.javaweb.repository.enity.RentAreaEntity;
 
 @Component
 // Định đây là 1 bean
 public class BuildingConverter {
-	@Autowired
-	private DistrictRepository districtRepository;
-
-	@Autowired
-	private RentAreaRepository rentAreaRepository;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -44,15 +38,10 @@ public class BuildingConverter {
 
 		//DistrictEntity districtEntity = districtRepository.findById(buildingEntity.getDistrictId());
 		buildingResponse.setAddress(
-				buildingEntity.getStreet() + "," + buildingEntity.getWard() + "," + "");
-		List<RentAreaEntity> rentArea = rentAreaRepository.findById(buildingEntity.getId());
+				buildingEntity.getStreet() + "," + buildingEntity.getWard() + "," + buildingEntity.getDistrictEntity().getName());
 		StringBuilder rentAreaValue = new StringBuilder("");
-		for (int i = 0; i < rentArea.size(); i++) {
-			rentAreaValue.append(rentArea.get(i).getValue() + "'"); // Nếu không có .getValue thì in ra gì ?
-			if (i < rentArea.size() - 1) {
-				rentAreaValue.append(",");
-			}
-		}
+		rentAreaValue.append(buildingEntity.getRentAreaEntity().stream().map(i -> i.getValue().toString()).collect(Collectors.joining(",")));
+			
 		// Thử làm với Java Stream xem
 		buildingResponse.setRentArea(rentAreaValue.toString());
 		return buildingResponse;

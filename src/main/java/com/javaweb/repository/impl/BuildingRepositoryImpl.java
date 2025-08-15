@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +25,9 @@ import com.javaweb.util.ConnectionDriverUtils;
 @Repository
 public class BuildingRepositoryImpl implements BuildingRepository {
 
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 	// Cần join field nào, tìm kiếm field đó
 	// rentArea (tìm theo diện tích thuê)
 	// staffId (Tìm kiếm theo nhân viên phụ trách)
@@ -129,27 +136,9 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		// DÙng groupBy tránh lặp lại nhiều lần ở bảng nhiều
 		sql.append(where).append(" GROUP BY b.id ");
 
-		List<BuildingEntity> results = new ArrayList<BuildingEntity>();
-		try (Connection con = ConnectionDriverUtils.getConnection();
-				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery(sql.toString())) {
-			while (rs.next()) {
-				BuildingEntity building = new BuildingEntity();
-				building.setId(rs.getLong("id"));
-				building.setName(rs.getString("name"));
-//				building.setDistrictId(rs.getLong("districtid"));
-				building.setNumberOfBasement(rs.getLong("numberOfBasement"));
-				building.setStreet(rs.getString("street"));
-				building.setWard(rs.getString("ward"));
-				building.setRentPrice(rs.getLong("rentprice"));
-				results.add(building);
-			}
+		Query query = entityManager.createNativeQuery(sql.toString(), BuildingEntity.class);
+		
 
-			System.out.print("Connected database successfully");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return results;
+		return query.getResultList();
 	}
 }
