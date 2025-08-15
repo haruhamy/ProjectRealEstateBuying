@@ -1,21 +1,27 @@
 package com.javaweb.converter;
 
-import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.javaweb.customexception.ValidateDataBuildingException;
+import com.javaweb.dto.BuildingDTO;
 import com.javaweb.dto.BuildingResponseDTO;
-import com.javaweb.repository.RentAreaRepository;
 import com.javaweb.repository.enity.BuildingEntity;
-import com.javaweb.repository.enity.RentAreaEntity;
+import com.javaweb.repository.enity.DistrictEntity;
 
 @Component
 // Định đây là 1 bean
 public class BuildingConverter {
 
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 	@Autowired
 	private ModelMapper modelMapper;
 	// CÓ 2 hàm
@@ -36,14 +42,26 @@ public class BuildingConverter {
 //		buildingResponse.setAddress(
 //				buildingEntity.getStreet() + "," + buildingEntity.getWard() + buildingEntity.getDistrictId());
 
-		//DistrictEntity districtEntity = districtRepository.findById(buildingEntity.getDistrictId());
-		buildingResponse.setAddress(
-				buildingEntity.getStreet() + "," + buildingEntity.getWard() + "," + buildingEntity.getDistrictEntity().getName());
+		// DistrictEntity districtEntity =
+		// districtRepository.findById(buildingEntity.getDistrictId());
+		buildingResponse.setAddress(buildingEntity.getStreet() + "," + buildingEntity.getWard() + ","
+				+ buildingEntity.getDistrictEntity().getName());
 		StringBuilder rentAreaValue = new StringBuilder("");
-		rentAreaValue.append(buildingEntity.getRentAreaEntity().stream().map(i -> i.getValue().toString()).collect(Collectors.joining(",")));
-			
+		rentAreaValue.append(buildingEntity.getRentAreaEntity().stream().map(i -> i.getValue().toString())
+				.collect(Collectors.joining(",")));
+
 		// Thử làm với Java Stream xem
 		buildingResponse.setRentArea(rentAreaValue.toString());
 		return buildingResponse;
+	}
+
+	public BuildingEntity toBuildingEntity(BuildingDTO buildingDTO) {
+		BuildingEntity buildingEntity = modelMapper.map(buildingDTO, BuildingEntity.class);
+		DistrictEntity districtEntity = entityManager.find(DistrictEntity.class, buildingDTO.getDistrictId());
+		if(districtEntity == null) {
+			throw new ValidateDataBuildingException("Name or NumberofBasement is NULL");
+		}
+		buildingEntity.setDistrictEntity(districtEntity);
+		return buildingEntity;
 	}
 }

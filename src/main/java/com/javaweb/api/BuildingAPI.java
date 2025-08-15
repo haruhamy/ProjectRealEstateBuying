@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.javaweb.customexception.ValidateDataBuildingException;
 import com.javaweb.dto.BuildingDTO;
 import com.javaweb.dto.BuildingResponseDTO;
+import com.javaweb.repository.enity.BuildingEntity;
 import com.javaweb.service.BuildingService;
 
 @RestController
@@ -118,8 +119,9 @@ public class BuildingAPI {
 //			return errorDetailReponse;
 //		}
 		validateDataBuilding(buildingDTO);
-
-		return buildingDTO;
+		BuildingEntity buildingEntity = buildingService.createBuilding(buildingDTO);
+		
+		return buildingEntity;
 
 	}
 
