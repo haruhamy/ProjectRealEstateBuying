@@ -23,7 +23,7 @@ import com.javaweb.util.ConnectionDriverUtils;
 
 @Primary
 @Repository
-public class BuildingRepositoryImpl implements BuildingRepository {
+public class BuildingRepositoryImpl{
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -124,7 +124,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		}
 	}
 
-	@Override
+	//@Override
 	public List<BuildingEntity> findAll(BuildingSearchBuilder buildingSearchBuilder) {
 		StringBuilder sql = new StringBuilder("SELECT b.* FROM building b");
 		// Xong Join gọi hàm nối với chuỗi sql
