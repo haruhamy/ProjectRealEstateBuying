@@ -1,0 +1,110 @@
+[
+  {
+    "city": "quan1",
+    "district": "ton-duc-thang",
+    "type": "can-ho",
+    "name": "Căn hộ Vinhomes Golden River",
+    "address": "2 Tôn Đức Thắng, Quận 1, TP.HCM",
+    "image": "https://vinhomes.vn/themes/desktop/images/landmark81.jpg",
+    "typeText": "Căn hộ",
+    "area": "85m2 - 120m2",
+    "price": "4,2 Tỷ",
+    "description": "Vinhomes rất thích hợp cho người giàu."
+  },
+  {
+    "city": "quan1",
+    "district": "ton-duc-thang",
+    "type": "office",
+    "name": "Văn phòng Saigon Trade Center",
+    "address": "37 Tôn Đức Thắng, Quận 1, TP.HCM",
+    "image": "https://media.cafebiz.vn/thumb_w/640/162123310254002176/2021/8/13/photo-1-16288352074591343264682.jpg",
+    "typeText": "Văn phòng",
+    "area": "50m2 - 200m2",
+    "price": "45 Triệu/tháng",
+    "description": "Tòa nhà văn phòng hạng A, trung tâm quận 1, tiện ích đầy đủ."
+  },
+  {
+    "city": "quan3",
+    "district": "nguyen-dinh-chieu",
+    "type": "shophouse",
+    "name": "Shophouse Nguyễn Đình Chiểu",
+    "address": "120 Nguyễn Đình Chiểu, Quận 3, TP.HCM",
+    "image": "https://cdn.chotot.com/HjOlqcf5XScyJup1bA2eqF1lPRtwcKwrU6l3Uwv6NbE/preset:listing/plain/ea5a22d77fa9b8859aebf1c03799bd17-2845944693829581280.jpg",
+    "typeText": "Shophouse",
+    "area": "100m2 - 160m2",
+    "price": "8,0 Tỷ",
+    "description": "Shophouse trung tâm, kinh doanh sầm uất, vị trí đắc địa Quận 3."
+  },
+  {
+    "city": "quan5",
+    "district": "tran-hung-dao",
+    "type": "nha-pho",
+    "name": "Nhà phố Trần Hưng Đạo",
+    "address": "96 Trần Hưng Đạo, Quận 5, TP.HCM",
+    "image": "https://file4.batdongsan.com.vn/2021/10/15/20211015154631-7c3b.jpg",
+    "typeText": "Nhà phố",
+    "area": "70m2 - 110m2",
+    "price": "6,5 Tỷ",
+    "description": "Nhà phố thiết kế hiện đại, gần chợ Kim Biên và trường học."
+  },
+  {
+    "city": "quan7",
+    "district": "phu-my-hung",
+    "type": "biet-thu",
+    "name": "Biệt thự Phú Mỹ Hưng",
+    "address": "88 Phú Mỹ Hưng, Quận 7, TP.HCM",
+    "image": "https://file4.batdongsan.com.vn/crop/700x525/2021/09/07/20210907155232-71fd_wm.jpg",
+    "typeText": "Biệt thự",
+    "area": "250m2 - 400m2",
+    "price": "22,0 Tỷ",
+    "description": "Biệt thự cao cấp khu Nam, nhiều tiện ích nội khu, dân cư tri thức."
+  },
+  {
+    "city": "thu-duc",
+    "district": "kha-van-can",
+    "type": "dat-nen",
+    "name": "Đất nền Thủ Đức Riverside",
+    "address": "Kha Vạn Cân, Thủ Đức, TP.HCM",
+    "image": "https://cdn.tgdd.vn/Files/2021/03/31/1340576/dat-nen-la-gi-uu-nhuoc-diem-va-kinh-nghiem-dau-tu-dat-nen-202103311001159925.jpg",
+    "typeText": "Đất nền",
+    "area": "90m2 - 200m2",
+    "price": "3,2 Tỷ",
+    "description": "Lô đất ven sông, pháp lý rõ ràng, vị trí tiềm năng cho đầu tư."
+  },
+  {
+    "name": "Căn hộ Masteri Thảo Điền",
+    "description": "Thiết kế hiện đại, tiện nghi cao cấp tại Thảo Điền.",
+    "address": "159 Xa Lộ Hà Nội, Thủ Đức, TP.HCM",
+    "type": "can-ho",
+    "typeText": "Căn hộ",
+    "area": "60m2 - 100m2",
+    "price": "3.6 Tỷ",
+    "district": "kha-van-can",
+    "city": "thu-duc",
+    "image": "https://cdn.houseviet.vn/images/projects/masteri-thao-dien.jpg"
+  },
+  {
+    "name": "Shophouse Sunrise City",
+    "description": "Vị trí vàng, sẵn sàng khai thác kinh doanh.",
+    "address": "23 Nguyễn Hữu Thọ, Quận 7, TP.HCM",
+    "type": "shophouse",
+    "typeText": "Shophouse",
+    "area": "120m2 - 160m2",
+    "price": "9.8 Tỷ",
+    "district": "nguyen-van-linh",
+    "city": "quan7",
+    "image": "https://cdn.houseviet.vn/images/projects/sunrise-city.jpg"
+  },
+  {
+    "name": "Biệt thự Villa Park Quận 9",
+    "description": "Không gian sống đẳng cấp, an ninh khép kín.",
+    "address": "Đường Bưng Ông Thoàn, TP. Thủ Đức",
+    "type": "biet-thu",
+    "typeText": "Biệt thự",
+    "area": "250m2 - 350m2",
+    "price": "15.2 Tỷ",
+    "district": "to-vinh-dien",
+    "city": "thu-duc",
+    "image": "https://cdn.houseviet.vn/images/projects/villa-park.jpg"
+  }
+]
